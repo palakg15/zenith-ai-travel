@@ -45,7 +45,6 @@ function App() {
   });
 
   // --- Handlers ---
-
   const handleSendOTP = async () => {
     try {
       await axios.post('http://localhost:5001/api/send-otp', { email });
@@ -67,13 +66,10 @@ function App() {
     setLastTrip(form.destination);
     
     try {
-      // 1. Geocoding
       const geo = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${form.destination}`);
       if (geo.data.length > 0) {
         setMapCenter([parseFloat(geo.data[0].lat), parseFloat(geo.data[0].lon)]);
       }
-      
-      // 2. AI Plan Generation
       const res = await axios.post('http://localhost:5001/api/plan', form);
       setPlan(res.data.plan);
       setCurrentPage('plan');
@@ -85,7 +81,6 @@ function App() {
   };
 
   // --- Views ---
-
   if (currentPage === 'login') {
     return (
       <div className="page">
@@ -126,7 +121,6 @@ function App() {
     );
   }
 
-  // --- Itinerary Result View ---
   return (
     <div className="page" style={{ overflowY: 'auto', display: 'block', padding: '40px 0' }}>
       <div className="auth-card" style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'left' }}>
@@ -171,9 +165,26 @@ function App() {
           </div>
         </div>
 
+        {/* BUTTONS BAR */}
         <div style={{ marginTop: '30px', display: 'flex', gap: '15px' }}>
-          <button className="btn-primary" style={{ flex: 1 }} onClick={() => handlePrint()}>EXPORT TO PDF</button>
-          <button className="btn-primary" style={{ flex: 1, background: '#25D366' }} onClick={() => window.open(`https://wa.me/?text=Check out my Zenith Trip to ${form.destination}: ${encodeURIComponent(plan.substring(0, 300))}...`)}>SHARE ON WHATSAPP</button>
+          <button 
+            className="btn-primary" 
+            style={{ flex: 1 }} 
+            onClick={() => handlePrint()}
+          >
+            EXPORT TO PDF
+          </button>
+          
+          <button 
+            className="btn-primary" 
+            style={{ flex: 1, background: '#25D366' }} 
+            onClick={() => {
+              const message = `*ZENITH TRAVEL PLAN: ${form.destination.toUpperCase()}*\n\n${plan}`;
+              window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+            }}
+          >
+            SHARE ON WHATSAPP
+          </button>
         </div>
       </div>
     </div>

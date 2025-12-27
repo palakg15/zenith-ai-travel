@@ -110,3 +110,33 @@ input:focus {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
 }
+@media print {
+  /* Force the scrollable box to show all content during print */
+  .itinerary-scroll-box {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+  
+  /* Hide buttons and maps if they break the PDF layout */
+  .btn-primary, .leaflet-container {
+    display: none !important;
+  }
+  
+  /* Ensure the card takes full width of the page */
+  .auth-card {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: none !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+
+  /* Make sure text is black for printing */
+  div, h3, strong {
+    color: black !important;
+  }
+}
