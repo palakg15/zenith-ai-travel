@@ -26,6 +26,6 @@ _**🛠️ Tech Stack**_
   pip install -r requirements.txt
   python app.py
 **3. Frontend Setup**
-cd frontend
-npm install
-npm run dev
+  cd frontend
+  npm install
+  npm run dev
